@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-
-import {Platform} from '@ionic/angular';
+import {Platform, AlertController} from '@ionic/angular';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
-
-import {AlertController} from 'ionic-angular';
 import {OpenNativeSettings} from '@ionic-native/open-native-settings/ngx';
 
 @Component({
@@ -22,23 +19,45 @@ export class HomePage implements OnInit{
     constructor(
         public platform: Platform,
         private androidPermissions: AndroidPermissions,
-        private alertCtrl: AlertController,
+        private alertController: AlertController,
         private openNativeSettings: OpenNativeSettings
     ) {
-        this.platform.ready().then(() => {
-            console.log('Android Permissions ', this.androidPermissions);
-            this.androidPermissions.checkPermission(this.permissions[0]).then(
-                result => console.log('Has permission ', result.hasPermission),
-                err => this.openNativeSettings();
-            );
-        });
     }
 
     ngOnInit(): void {
-        this.requestForPermissions();
+        this.checkPermission();
     }
 
-    openNativeSettings() {
+    checkPermission() {
+        const onsuccess = (result) => {
+            console.log('Has permission ', result.hasPermission);
+        };
+        const onerror = (err) => {
+            console.log('Check Permission Error ');
+            this.requestForPermissions();
+        };
+
+        this.platform.ready().then(() => {
+            console.log('Checking Android Permissions.. ');
+            this.androidPermissions.checkPermission(this.permissions[0]).then(onsuccess, onerror);
+        });
+    }
+
+    requestForPermissions() {
+        console.log('Requesting Permission..');
+
+        const onsuccess = (result) => {
+            console.log('Permissions Granted ', result.hasPermission);
+        };
+        const onerror = (err) => {
+            console.log('Request Permission Error ');
+            this.openSettings();
+        };
+
+        this.androidPermissions.requestPermissions(this.permissions).then(onsuccess, onerror);
+    }
+
+    openSettings() {
         this.alertController.create({
             header: 'Could not start app.',
             subHeader: 'Please enable microphone permissions in the system app settings.',
@@ -51,20 +70,6 @@ export class HomePage implements OnInit{
             ]
         })
             .then(alert => alert.present());
-
-        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.RECORD_AUDIO);
-    }
-
-    requestForPermissions() {
-        console.log('Requesting Permission..');
-        this.androidPermissions.requestPermissions([
-            this.androidPermissions.PERMISSION.RECORD_AUDIO,
-            this.androidPermissions.PERMISSION.REQUEST_MICROPHONE,
-        ])
-            .then(
-                result => console.log('Permissions Granted ', result.hasPermission),
-                err => this.requestForPermissions()
-            );
     }
 
 }
