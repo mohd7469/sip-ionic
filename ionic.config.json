@@ -1,0 +1,7 @@
+{
+  "name": "sip",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
