@@ -6,9 +6,9 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx'
-import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx'
+// import { AndroidPermissions } from '@ionic-native/android-permissions/ngx'
+// import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
+// import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx'
 
 @NgModule({
   imports: [
@@ -17,7 +17,9 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx'
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage],
-  providers: [AndroidPermissions, OpenNativeSettings, UniqueDeviceID],
+  declarations: [HomePage]
 })
+
+// providers: [AndroidPermissions, OpenNativeSettings, UniqueDeviceID],
+
 export class HomePageModule {}

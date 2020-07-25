@@ -51,7 +51,7 @@ export class HomePage implements OnInit{
         };
         const onerror = (err) => {
             console.log('Request Permission Error ');
-            this.openSettings();
+            // this.openSettings();
         };
 
         this.androidPermissions.requestPermissions(this.permissions).then(onsuccess, onerror);
