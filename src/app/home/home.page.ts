@@ -11,10 +11,13 @@ import {OpenNativeSettings} from '@ionic-native/open-native-settings/ngx';
 
 export class HomePage implements OnInit{
 
+    /*
     permissions = [
         this.androidPermissions.PERMISSION.RECORD_AUDIO,
         this.androidPermissions.PERMISSION.REQUEST_MICROPHONE,
     ];
+    */
+    microphonePermission = null;
 
     constructor(
         public platform: Platform,
@@ -22,6 +25,7 @@ export class HomePage implements OnInit{
         private alertController: AlertController,
         private openNativeSettings: OpenNativeSettings
     ) {
+        this.microphonePermission = this.androidPermissions.PERMISSION.REQUEST_MICROPHONE;
     }
 
     ngOnInit(): void {
@@ -30,6 +34,10 @@ export class HomePage implements OnInit{
 
     checkPermission() {
         const onsuccess = (result) => {
+            if(!result.hasPermission) {
+                console.log('Has still not authorized yet : Check Permission Error ');
+                return this.requestForPermissions();
+            }
             console.log('Has permission ', result.hasPermission);
         };
         const onerror = (err) => {
@@ -39,7 +47,7 @@ export class HomePage implements OnInit{
 
         this.platform.ready().then(() => {
             console.log('Checking Android Permissions.. ');
-            this.androidPermissions.checkPermission(this.permissions[0]).then(onsuccess, onerror);
+            this.androidPermissions.checkPermission(this.microphonePermission).then(onsuccess, onerror);
         });
     }
 
@@ -47,6 +55,10 @@ export class HomePage implements OnInit{
         console.log('Requesting Permission..');
 
         const onsuccess = (result) => {
+            if(!result.hasPermission) {
+                console.log('Has still not authorized yet : Request Permission Error ');
+                // return this.openSettings();;
+            }
             console.log('Permissions Granted ', result.hasPermission);
         };
         const onerror = (err) => {
@@ -54,7 +66,7 @@ export class HomePage implements OnInit{
             // this.openSettings();
         };
 
-        this.androidPermissions.requestPermissions(this.permissions).then(onsuccess, onerror);
+        this.androidPermissions.requestPermission(this.microphonePermission).then(onsuccess, onerror);
     }
 
     openSettings() {
