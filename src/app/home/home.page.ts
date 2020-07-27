@@ -9,7 +9,7 @@ import {OpenNativeSettings} from '@ionic-native/open-native-settings/ngx';
     styleUrls: ['home.page.scss'],
 })
 
-export class HomePage implements OnInit{
+export class HomePage implements OnInit {
 
     /*
     permissions = [
@@ -30,11 +30,12 @@ export class HomePage implements OnInit{
 
     ngOnInit(): void {
         this.checkPermission();
+        console.log(this.androidPermissions);
     }
 
     checkPermission() {
         const onsuccess = (result) => {
-            if(!result.hasPermission) {
+            if (!result.hasPermission) {
                 console.log('Has still not authorized yet : Check Permission Error ');
                 return this.requestForPermissions();
             }
@@ -55,7 +56,7 @@ export class HomePage implements OnInit{
         console.log('Requesting Permission..');
 
         const onsuccess = (result) => {
-            if(!result.hasPermission) {
+            if (!result.hasPermission) {
                 console.log('Has still not authorized yet : Request Permission Error ');
                 // return this.openSettings();;
             }
@@ -67,7 +68,6 @@ export class HomePage implements OnInit{
         };
 
         this.androidPermissions.requestPermission(this.microphonePermission).then(onsuccess, onerror);
-        console.log(this.androidPermissions);
     }
 
     openSettings() {
