@@ -25,7 +25,7 @@ export class HomePage implements OnInit{
         private alertController: AlertController,
         private openNativeSettings: OpenNativeSettings
     ) {
-        this.microphonePermission = this.androidPermissions.PERMISSION.REQUEST_MICROPHONE;
+        this.microphonePermission = this.androidPermissions.PERMISSION.RECORD_AUDIO;
     }
 
     ngOnInit(): void {
@@ -67,6 +67,7 @@ export class HomePage implements OnInit{
         };
 
         this.androidPermissions.requestPermission(this.microphonePermission).then(onsuccess, onerror);
+        console.log(this.androidPermissions);
     }
 
     openSettings() {
